@@ -6,13 +6,14 @@ import imutils
 import dlib
 import cv2
 
+    
 MOUTH_AR_THRESH = 0.6
-MOUTH_AR_CONSECUTIVE_FRAMES = 15
-EYE_AR_THRESH = 0.19
-EYE_AR_CONSECUTIVE_FRAMES = 15
-WINK_AR_DIFF_THRESH = 0.04
-WINK_AR_CLOSE_THRESH = 0.19    #0.19
-WINK_CONSECUTIVE_FRAMES = 5   #10
+MOUTH_AR_CONSECUTIVE_FRAMES = 15  
+EYE_AR_THRESH = 0.19        #0.19
+EYE_AR_CONSECUTIVE_FRAMES = 20      #15
+WINK_AR_DIFF_THRESH = 0.03
+WINK_AR_CLOSE_THRESH = 0.23    #0.19
+WINK_CONSECUTIVE_FRAMES = 3    #10
 
 MOUTH_COUNTER = 0
 EYE_COUNTER = 0
@@ -23,7 +24,6 @@ LEFT_WINK = False
 RIGHT_WINK = False
 SCROLL_MODE = False
 ANCHOR_POINT = (0, 0)
-WHITE_COLOR = (255, 255, 255)
 YELLOW_COLOR = (0, 255, 255)
 RED_COLOR = (0, 0, 255)
 GREEN_COLOR = (0, 255, 0)
@@ -63,7 +63,7 @@ while True:
     if len(rects) > 0:
         rect = rects[0]
     else:
-        cv2.imshow("Frame", frame)
+        cv2.imshow("VisionFlow", frame)
         key = cv2.waitKey(1) & 0xFF
         continue
 
@@ -149,7 +149,7 @@ while True:
   
 
     if INPUT_MODE:
-        cv2.putText(frame, "READING INPUT!", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, RED_COLOR, 2)
+        cv2.putText(frame, "READING INPUT", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, RED_COLOR, 2)
         x, y = ANCHOR_POINT
         nx, ny = nose_point
         w, h = 60, 35
@@ -159,7 +159,9 @@ while True:
 
         dir = direction(nose_point, ANCHOR_POINT, w, h)
         cv2.putText(frame, dir.upper(), (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.7, RED_COLOR, 2)
-        drag = 18
+        
+        drag = 18                           # amount of distance to move per movement
+        
         if dir == 'right':
             pyag.moveRel(drag, 0)
         elif dir == 'left':
@@ -176,19 +178,19 @@ while True:
                 pyag.moveRel(0, drag)
 
     if SCROLL_MODE:
-        cv2.putText(frame, 'SCROLL MODE IS ON!', (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, RED_COLOR, 2)
+        cv2.putText(frame, 'Scroll mode!', (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, RED_COLOR, 2)
 
-    cv2.putText(frame, "MAR: {:.2f}".format(mar), (500, 30),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.7, RED_COLOR, 2)
-    cv2.putText(frame, "Right EAR: {:.2f}".format(rightEAR), (460, 80),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.7, YELLOW_COLOR, 2)
-    cv2.putText(frame, "Left EAR: {:.2f}".format(leftEAR), (460, 130),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.7, YELLOW_COLOR, 2)
-    # cv2.putText(frame, "Diff EAR: {:.2f}".format(np.abs(leftEAR - rightEAR)), (460, 80),
-    #             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+    cv2.putText(frame, "MAR: {:.2f}".format(mar), (522, 50),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.7, BLACK_COLOR, 2)
+    cv2.putText(frame, "Right EAR: {:.2f}".format(rightEAR), (460, 90),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.7, BLACK_COLOR, 2)
+    cv2.putText(frame, "Left EAR: {:.2f}".format(leftEAR), (470, 130),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.7, BLACK_COLOR, 2)
+    cv2.putText(frame, "Diff EAR: {:.2f}".format(np.abs(leftEAR - rightEAR)), (474, 170),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.7, BLACK_COLOR, 2)
 
 
-    cv2.imshow("Frame", frame)
+    cv2.imshow("VisionFlow", frame)
     key = cv2.waitKey(1) & 0xFF
 
     # escape to exit
