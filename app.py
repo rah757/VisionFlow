@@ -50,6 +50,7 @@ cam_h = 480
 unit_w = resolution_w / cam_w
 unit_h = resolution_h / cam_h
 
+
 while True:
     _, frame = vid.read()
     frame = cv2.flip(frame, 1)
@@ -109,6 +110,7 @@ while True:
 
                 if WINK_COUNTER > WINK_CONSECUTIVE_FRAMES:
                     pyag.click(button='left')
+                    # pyag.typewrite('typeeed', interval=0.2)
 
                     WINK_COUNTER = 0
 
