@@ -7,7 +7,8 @@ import numpy as np
 import pyautogui as pyag
 import imutils
 import dlib
-
+import pyttsx3
+engine = pyttsx3.init()
 
 MOUTH_AR_THRESH = 0.6
 MOUTH_AR_CONSECUTIVE_FRAMES = 15  
@@ -220,10 +221,11 @@ def listen_for_command(timeout_duration=2, phrase_limit=5):
             command_detected = r.recognize_google(audio).lower()
             if "jarvis" in command_detected:
                 print("'jarvis' keyword detected. Now listening for your command:")
-                
+                engine.say('listening to command')
+                engine.runAndWait()
                 try:
                     with sr.Microphone() as source:
-                        r.adjust_for_ambient_noise(source)  # Adjust again for ambient noise
+                        r.adjust_for_ambient_noise(source)  # Adjust for ambient noise
                         audio = r.listen(source, timeout=timeout_duration, phrase_time_limit=phrase_limit)
                     text = r.recognize_google(audio).lower()
                     print("You said: " + text)
