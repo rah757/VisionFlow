@@ -8,7 +8,9 @@ import pyautogui as pyag
 import imutils
 import dlib
 import pyttsx3
-engine = pyttsx3.init()
+engine = pyttsx3.init()         # tts engine setup
+import os
+
 
 MOUTH_AR_THRESH = 0.6
 MOUTH_AR_CONSECUTIVE_FRAMES = 15  
@@ -203,8 +205,8 @@ def main_loop():
 
     cv2.destroyAllWindows()
     vid.release()
-    
-    
+
+
 def listen_for_command(timeout_duration=2, phrase_limit=5):
     r = sr.Recognizer()
     while True:  # Continuously listen for commands
@@ -233,6 +235,10 @@ def listen_for_command(timeout_duration=2, phrase_limit=5):
                     if text == "stop listening":  # exits loop
                         print("Stopping listening.")
                         break  
+                    elif text == "open brave":
+                        os.startfile('C:\\Users\\a\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe')     # opens brave browser
+                    elif text == "open vs code":
+                        os.startfile('C:\\Users\\a\\AppData\\Local\\Programs\\Microsoft VS Code\\code.exe')     # opens brave browser
                 except sr.WaitTimeoutError:
                     print("Timed out waiting for command. Please try again.")
             else:
