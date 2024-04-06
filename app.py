@@ -10,6 +10,7 @@ import dlib
 import pyttsx3
 engine = pyttsx3.init()         # tts engine setup
 import os
+import webbrowser
 
 
 MOUTH_AR_THRESH = 0.6
@@ -37,7 +38,7 @@ BLACK_COLOR = (0, 0, 0)
 
 
 def main_loop():
-    global MOUTH_COUNTER, EYE_COUNTER, WINK_COUNTER, INPUT_MODE, EYE_CLICK, LEFT_WINK, RIGHT_WINK, SCROLL_MODE, ANCHOR_POINT
+    global MOUTH_COUNTER, EYE_COUNTER, WINK_COUNTER, INPUT_MODE, EYE_CLICK, LEFT_WINK, RIGHT_WINK, SCROLL_MODE, ANCHOR_POINT, SCROLL_MODE_ANNOUNCED
     shape_predictor = "model/shape_predictor_68_face_landmarks.dat"
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor(shape_predictor)
@@ -181,10 +182,17 @@ def main_loop():
                     pyag.scroll(-40)
                 else:
                     pyag.moveRel(0, drag)
-
+            
+        if SCROLL_MODE and not SCROLL_MODE_ANNOUNCED:       # announce scroll mode on and off
+            engine.say('Scroll mode is on')
+            engine.runAndWait()
+            SCROLL_MODE_ANNOUNCED = True  
+        elif not SCROLL_MODE:
+            SCROLL_MODE_ANNOUNCED = False  
+        
         if SCROLL_MODE:
             cv2.putText(frame, 'Scroll mode!', (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, RED_COLOR, 2)
-
+            
         cv2.putText(frame, "MAR: {:.2f}".format(mar), (522, 50),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, BLACK_COLOR, 2)
         cv2.putText(frame, "Right EAR: {:.2f}".format(rightEAR), (460, 90),
@@ -209,7 +217,7 @@ def main_loop():
 
 def listen_for_command(timeout_duration=2, phrase_limit=5):
     r = sr.Recognizer()
-    while True:  # Continuously listen for commands
+    while True:  # listen for commands
         with sr.Microphone() as source:
             r.adjust_for_ambient_noise(source)  # Adjust for ambient noise once at the start
             print("Speak (listening for 'jarvis' to activate):")
@@ -235,10 +243,25 @@ def listen_for_command(timeout_duration=2, phrase_limit=5):
                     if text == "stop listening":  # exits loop
                         print("Stopping listening.")
                         break  
+                    
+                    # automation
+                    
                     elif text == "open brave":
                         os.startfile('C:\\Users\\a\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe')     # opens brave browser
                     elif text == "open vs code":
                         os.startfile('C:\\Users\\a\\AppData\\Local\\Programs\\Microsoft VS Code\\code.exe')     # opens brave browser
+                        
+                    # automate google search
+                    
+                    elif "search" in text:
+                        query = text.split("search for ", 1)[1]
+                        if query:
+                            search_url = f"https://www.google.com/search?q={query}"
+                            webbrowser.open(search_url)
+                            print(f"Searching for: {query}")
+                        else:
+                            print("No search query provided.") 
+                        
                 except sr.WaitTimeoutError:
                     print("Timed out waiting for command. Please try again.")
             else:
