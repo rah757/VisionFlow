@@ -239,7 +239,9 @@ def listen_for_command(timeout_duration=2, phrase_limit=5):
                         audio = r.listen(source, timeout=timeout_duration, phrase_time_limit=phrase_limit)
                     text = r.recognize_google(audio).lower()
                     print("You said: " + text)
-                    pyag.typewrite(text)
+                    
+                    # stop listening
+                    
                     if text == "stop listening":  # exits loop
                         print("Stopping listening.")
                         break  
@@ -261,6 +263,9 @@ def listen_for_command(timeout_duration=2, phrase_limit=5):
                             print(f"Searching for: {query}")
                         else:
                             print("No search query provided.") 
+                    
+                    else:
+                        pyag.typewrite(text)
                         
                 except sr.WaitTimeoutError:
                     print("Timed out waiting for command. Please try again.")
