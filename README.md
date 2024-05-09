@@ -18,7 +18,7 @@ VisionFlow is an interactive system that combines computer vision and speech rec
 
 ### Setup
 1. Clone the repository:
-> git clone https://example.com/VisionFlow.git
+> git clone https://github.com/rah757/VisionFlow.git
 
 > cd VisionFlow
 
