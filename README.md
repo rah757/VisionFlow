@@ -38,9 +38,10 @@ Execute the main script to start the application:
 
 ## Key Features
 
-- **Eye Tracking and Blinks**: Control the cursor and execute clicks using eye movements and blinks.
 - **Mouth Movements**: Toggle input and scroll modes by opening the mouth.
-- **Voice Commands**: Activate by saying "Jarvis" followed by commands such as opening applications or performing Google searches.
+- **Head Tracking**: Once input mode or scroll mode is enabled, use head movement to move cursor or scroll the page.
+- **Eye Blinks**: Execute clicks using eye movements and blinks.
+- **Voice Commands**: Activate by saying "Jarvis" followed by commands such as opening applications, typing text or performing Google searches.
 
 ## Voice Commands
 
